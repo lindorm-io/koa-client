@@ -7,7 +7,7 @@ import { stringComparison, TPromise } from "@lindorm-io/core";
 
 const schema = Joi.object({
   clientId: Joi.string().guid().required(),
-  clientSecret: Joi.string(),
+  clientSecret: Joi.string().allow(null),
 });
 
 export const clientValidationMiddleware = (options: ICryptoSecretOptions): Middleware => {
@@ -19,13 +19,19 @@ export const clientValidationMiddleware = (options: ICryptoSecretOptions): Middl
     const { client, logger } = ctx;
     const { clientId, clientSecret } = ctx.request.body;
 
+    logger.debug("validating client", { clientId });
+
     await schema.validateAsync({ clientId, clientSecret });
+
+    logger.debug("comparing client id from body with client found in metadata");
 
     if (!stringComparison(clientId, client.id)) {
       throw new ClientMatchConflictError(clientId, client.id);
     }
 
     if (client.secret) {
+      logger.debug("validating client secret");
+
       try {
         crypto.assert(clientSecret, client.secret);
       } catch (err) {

@@ -16,10 +16,14 @@ export const clientMiddleware = async (ctx: IKoaClientContext, next: TPromise<vo
   await schema.validateAsync({ clientId });
 
   try {
+    logger.debug("finding client", { clientId });
+
     ctx.client = await cache.client.find(clientId);
   } catch (err) {
     throw new InvalidClientError(clientId, err);
   }
+
+  logger.debug("validating client approval setting", { approved: ctx.client.approved });
 
   if (!ctx.client.approved) {
     throw new RejectedClientError(clientId);
