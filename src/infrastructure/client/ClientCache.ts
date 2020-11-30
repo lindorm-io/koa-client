@@ -14,7 +14,7 @@ export class ClientCache extends CacheBase<Client> implements IClientCache {
   constructor(options: ICacheOptions) {
     super({
       client: options.client,
-      entityName: Client.constructor.name,
+      entityName: "Client",
       expiresInSeconds: options.expiresInSeconds,
       logger: options.logger,
       schema,
