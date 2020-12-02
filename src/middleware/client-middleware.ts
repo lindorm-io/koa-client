@@ -1,24 +1,26 @@
+import Joi from "@hapi/joi";
 import { IKoaClientContext } from "../types";
 import { InvalidClientError, RejectedClientError } from "../error";
 import { TPromise } from "@lindorm-io/core";
-import Joi from "@hapi/joi";
+import { getClient, IGetClientOptions } from "../support";
 
 const schema = Joi.object({
   clientId: Joi.string().guid().required(),
 });
 
-export const clientMiddleware = async (ctx: IKoaClientContext, next: TPromise<void>): Promise<void> => {
+export const clientMiddleware = (options?: IGetClientOptions) => async (
+  ctx: IKoaClientContext,
+  next: TPromise<void>,
+): Promise<void> => {
   const start = Date.now();
 
-  const { cache, logger, metadata } = ctx;
+  const { logger, metadata } = ctx;
   const { clientId } = metadata;
 
   await schema.validateAsync({ clientId });
 
   try {
-    logger.debug("finding client", { clientId });
-
-    ctx.client = await cache.client.find(clientId);
+    ctx.client = await getClient(ctx)(clientId, options);
   } catch (err) {
     throw new InvalidClientError(clientId, err);
   }

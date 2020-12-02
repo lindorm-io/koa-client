@@ -1,0 +1,101 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getClient should resolve client from cache 1`] = `
+Client {
+  "_approved": false,
+  "_created": 2020-01-01T07:00:00.000Z,
+  "_description": null,
+  "_events": Array [],
+  "_extra": Object {},
+  "_id": "950b90fc-0d07-4712-8226-192ae18cbc7c",
+  "_name": null,
+  "_secret": null,
+  "_updated": 2020-01-01T07:00:00.000Z,
+  "_version": 0,
+}
+`;
+
+exports[`getClient should resolve client from cache 2`] = `
+Object {
+  "Client::950b90fc-0d07-4712-8226-192ae18cbc7c": Object {
+    "blob": "{\\"json\\":{\\"id\\":\\"950b90fc-0d07-4712-8226-192ae18cbc7c\\",\\"version\\":\\"0\\",\\"created\\":\\"2020-01-01T07:00:00.000Z\\",\\"updated\\":\\"2020-01-01T07:00:00.000Z\\",\\"events\\":[],\\"approved\\":\\"false\\",\\"description\\":\\"null\\",\\"extra\\":{},\\"name\\":\\"null\\",\\"secret\\":\\"null\\"},\\"meta\\":{\\"id\\":\\"string\\",\\"version\\":\\"number\\",\\"created\\":\\"date\\",\\"updated\\":\\"date\\",\\"events\\":[],\\"approved\\":\\"boolean\\",\\"description\\":\\"null\\",\\"extra\\":{},\\"name\\":\\"null\\",\\"secret\\":\\"null\\"}}",
+    "expiresInSeconds": null,
+  },
+}
+`;
+
+exports[`getClient should resolve client from repository 1`] = `
+Client {
+  "_approved": false,
+  "_created": 2020-01-01T07:00:00.000Z,
+  "_description": null,
+  "_events": Array [
+    Object {
+      "date": 2020-01-01T07:00:00.000Z,
+      "name": "client_created",
+      "payload": Object {
+        "approved": false,
+        "created": 2020-01-01T07:00:00.000Z,
+        "description": null,
+        "extra": Object {},
+        "name": null,
+        "secret": null,
+        "updated": 2020-01-01T07:00:00.000Z,
+      },
+    },
+  ],
+  "_extra": Object {},
+  "_id": "950b90fc-0d07-4712-8226-192ae18cbc7c",
+  "_name": null,
+  "_secret": null,
+  "_updated": 2020-01-01T07:00:00.000Z,
+  "_version": 0,
+}
+`;
+
+exports[`getClient should resolve client from repository 2`] = `
+Object {
+  "database_name": Object {
+    "client": Object {
+      "data": Array [
+        Object {
+          "approved": false,
+          "created": 2020-01-01T07:00:00.000Z,
+          "description": null,
+          "events": Array [
+            Object {
+              "date": 2020-01-01T07:00:00.000Z,
+              "name": "client_created",
+              "payload": Object {
+                "approved": false,
+                "created": 2020-01-01T07:00:00.000Z,
+                "description": null,
+                "extra": Object {},
+                "name": null,
+                "secret": null,
+                "updated": 2020-01-01T07:00:00.000Z,
+              },
+            },
+          ],
+          "extra": Object {},
+          "id": "950b90fc-0d07-4712-8226-192ae18cbc7c",
+          "name": null,
+          "secret": null,
+          "updated": 2020-01-01T07:00:00.000Z,
+          "version": 0,
+        },
+      ],
+      "indices": Array [
+        Object {
+          "index": Object {
+            "id": 1,
+          },
+          "options": Object {
+            "unique": true,
+          },
+        },
+      ],
+    },
+  },
+}
+`;

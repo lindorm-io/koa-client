@@ -2,18 +2,15 @@ import MockDate from "mockdate";
 import { AssertClientSecretError, ClientMatchConflictError } from "../error";
 import { Client } from "../entity";
 import { CryptoSecret } from "@lindorm-io/crypto";
-import { Logger, LogLevel } from "@lindorm-io/winston";
 import { TPromise } from "@lindorm-io/core";
 import { clientValidationMiddleware } from "./client-validation-middleware";
+import { logger } from "../test/grey-box";
 
 jest.mock("uuid", () => ({
   v4: jest.fn(() => "be3a62d1-24a0-401c-96dd-3aff95356811"),
 }));
 
 MockDate.set("2020-01-01 08:00:00.000");
-
-const logger = new Logger({ packageName: "n", packageVersion: "v" });
-logger.addConsole(LogLevel.ERROR);
 
 const cryptoOptions = {
   aesSecret: "aes",

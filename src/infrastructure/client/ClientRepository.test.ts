@@ -1,14 +1,9 @@
 import MockDate from "mockdate";
 import { Client } from "../../entity";
 import { ClientRepository } from "./ClientRepository";
-import { Logger, LogLevel } from "@lindorm-io/winston";
+import { RepositoryEntityNotFoundError } from "@lindorm-io/mongo";
 import { baseHash } from "@lindorm-io/core";
-import {
-  IMongoConnectionOptions,
-  MongoConnection,
-  MongoConnectionType,
-  RepositoryEntityNotFoundError,
-} from "@lindorm-io/mongo";
+import { getGreyBoxRepository, resetStore } from "../../test/grey-box";
 
 jest.mock("uuid", () => ({
   v4: jest.fn(() => "be3a62d1-24a0-401c-96dd-3aff95356811"),
@@ -16,34 +11,13 @@ jest.mock("uuid", () => ({
 
 MockDate.set("2020-01-01 08:00:00.000");
 
-const mongoOptions: IMongoConnectionOptions = {
-  type: MongoConnectionType.MEMORY,
-  auth: {
-    user: "user",
-    password: "password",
-  },
-  url: {
-    host: "host",
-    port: 1234,
-  },
-  databaseName: "databaseName",
-};
-
-const logger = new Logger({ packageName: "n", packageVersion: "v" });
-logger.addConsole(LogLevel.ERROR);
-
 describe("ClientRepository", () => {
   let repository: ClientRepository;
   let client: Client;
 
   beforeEach(async () => {
-    const mongo = new MongoConnection(mongoOptions);
-    await mongo.connect();
+    ({ client: repository } = await getGreyBoxRepository());
 
-    repository = new ClientRepository({
-      db: mongo.getDatabase(),
-      logger,
-    });
     client = new Client({
       approved: true,
       description: "description",
@@ -52,6 +26,8 @@ describe("ClientRepository", () => {
       secret: baseHash("secret"),
     });
   });
+
+  afterEach(resetStore);
 
   test("should create", async () => {
     await expect(repository.create(client)).resolves.toMatchSnapshot();
